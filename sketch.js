@@ -1,15 +1,40 @@
 var database = firebase.database();
-var button;
+var cnv1
+var cnv2
+var cnv3
 
 function setup() {
-  var cnv = createCanvas(400, 400);
+  var canvas = createCanvas(windowWidth, windowHeight);
+  cnv1 = createGraphics(350, windowHeight);
+  cnv2 = createGraphics(350, windowHeight);
+  cnv3 = createGraphics(350, windowHeight);
+  
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
-  cnv.position(x, y);
-  button = createButton("lol");
-  button.position(x, y);
+  var størelse = (windowWidth - width)/ 0.333;
+  //cnv.position(x, y);
 }
 
+
 function draw() {
-  background(220);
+  //background(220);
+  drawLeftPannel();
+  drawMiddlePannel();
+  drawRightPannel();
+
+  image(cnv1, 0, 0);
+  image(cnv2, 400, 0);
+  image(cnv3, 800, 0);
+}
+
+function drawLeftPannel(){
+  cnv1.background("lightblue");
+}
+
+function drawMiddlePannel() {
+  cnv2.background("red");
+}
+
+function drawRightPannel() {
+  cnv3.background("gray")
 }
