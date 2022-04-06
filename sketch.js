@@ -34,7 +34,7 @@ function databaseTest(){
 
 function draw() {
   //background(220);
-  /*
+  
   drawLeftPannel();
   drawMiddlePannel();
   drawRightPannel();
@@ -42,7 +42,7 @@ function draw() {
   image(cnv1, 0, 0);
   image(cnv2, 400, 0);
   image(cnv3, 800, 0);
-  */
+  
 }
 
 function drawLeftPannel(){
