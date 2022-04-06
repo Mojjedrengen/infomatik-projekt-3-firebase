@@ -4,6 +4,7 @@ jaer spil
 click html eller noget og så gaming time tror jeg
 dansk A
 Arthur du er en nød
+<<<<<<< HEAD
 jeg synes bare vi skal gå i gang
 svar mig athur og så dø du ikke
 
@@ -85,3 +86,7 @@ namespace thething
         }
     }
 }
+=======
+jeg synes bare vi skal gå i gang.
+why tho?
+>>>>>>> a3bb64cb20ef8e8f1748849cf59a9341b1d5b772
