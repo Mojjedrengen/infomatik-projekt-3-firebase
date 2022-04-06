@@ -16,7 +16,7 @@ function setup() {
   var størelse = (windowWidth - width)/ 0.333;
   //cnv.position(x, y);
 
-  button = createButton("test");
+  button = createButton("Icecream");
   button.mousePressed(databaseTest);
 }
 
