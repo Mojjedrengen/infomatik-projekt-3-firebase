@@ -6,6 +6,15 @@ dansk A
 Arthur du er en nød
 jeg synes bare vi skal gå i gang
 svar mig athur og så dø du ikke
+
+
+
+
+
+
+
+
+
 using System;
 using System.Threading;
 namespace thething
