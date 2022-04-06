@@ -21,10 +21,11 @@ function setup() {
 }
 
 function databaseTest(){
-  var Data = {
+  alert("FACK YOU BITCH");
+  /*var Data = {
     navn: "test",
     score: 69
-  }
+  }*/
 
   console.log(Data);
 
