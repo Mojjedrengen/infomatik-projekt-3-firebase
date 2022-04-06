@@ -24,8 +24,8 @@ function databaseTest(){
   alert("FACK YOU BITCH");
   /*var Data = {
     navn: "test",
-    score: 69*/
-  }
+    score: 69
+  }*/
 
   console.log(Data);
 
