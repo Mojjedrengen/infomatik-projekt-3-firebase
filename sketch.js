@@ -1,35 +1,39 @@
 var database = firebase.database();
 var player = database.ref('player/');
-var cnv1;
-var cnv2;
-var cnv3;
+var rightBuffer;
+var middleBuffer;
+var leftBuffer;
 var button;
+var icecreamButton;
+var score;
 
 function setup() {
-  var canvas = createCanvas(windowWidth, windowHeight);
-  cnv1 = createGraphics(350, windowHeight);
-  cnv2 = createGraphics(350, windowHeight);
-  cnv3 = createGraphics(350, windowHeight);
+  createCanvas(1200, 400);
+  rightBuffer = createGraphics(400, 400);
+  middleBuffer = createGraphics(400, 400);
+  leftBuffer = createGraphics(400, 400);
+
+  score = 0;
   
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
   var størelse = (windowWidth - width)/ 0.333;
   //cnv.position(x, y);
 
-  button = createButton("Icecream");
+  button = createButton("database");
   button.mousePressed(databaseTest);
+
+  icecreamButton = createButton("ice cream");
+  icecreamButton.mousePressed(increaseScore);
+}
+
+function increaseScore(){
+  score++;
 }
 
 function databaseTest(){
-  alert("FACK YOU BITCH");
-  /*var Data = {
-    navn: "test",
-    score: 69
-  }*/
-
-  console.log(Data);
-
-  player.push(Data);
+  console.log(score);
+  player.push(score);
 }
 
 
@@ -40,20 +44,26 @@ function draw() {
   drawMiddlePannel();
   drawRightPannel();
 
-  image(cnv1, 0, 0);
-  image(cnv2, 400, 0);
-  image(cnv3, 800, 0);
+  image(leftBuffer, 0, 0);
+  image(middleBuffer, 400, 0);
+  image(rightBuffer, 800, 0);
   
 }
 
 function drawLeftPannel(){
-  cnv1.background("lightblue");
+  leftBuffer.background(100, 255, 255);
+  leftBuffer.fill(0, 0, 0);
+  leftBuffer.textSize(32);
+  leftBuffer.text(score, 50, 50);
 }
 
 function drawMiddlePannel() {
-  cnv2.background("red");
+  middleBuffer.background(255, 255, 100);
 }
 
 function drawRightPannel() {
-  cnv3.background("gray")
+  rightBuffer.background(255, 100, 255);
+  rightBuffer.fill(0, 0, 0);
+  rightBuffer.textSize(32);
+  rightBuffer.text("This is the right buffer!", 50, 50);
 }
