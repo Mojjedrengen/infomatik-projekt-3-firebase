@@ -8,32 +8,35 @@ var icecreamButton;
 var score;
 
 function setup() {
-  createCanvas(1200, 400);
-  rightBuffer = createGraphics(400, 400);
-  middleBuffer = createGraphics(400, 400);
-  leftBuffer = createGraphics(400, 400);
+  createCanvas(windowWidth, windowHeight/1.02);  
+  rightBuffer = createGraphics(windowWidth, 400);
+  middleBuffer = createGraphics(windowWidth, 400);
+  leftBuffer = createGraphics(windowWidth, 400);
 
   score = 0;
   
-  var x = (windowWidth - width) / 2;
-  var y = (windowHeight - height) / 2;
-  var størelse = (windowWidth - width)/ 0.333;
+  // var x = (windowWidth - width) / 2;
+  // var y = (windowHeight - height) / 2;
+  // var størelse = (windowWidth - width)/ 0.333;
   //cnv.position(x, y);
 
-  button = createButton("database");
-  button.mousePressed(databaseTest);
+  BtnSendData = createButton("database");
+  BtnSendData.mousePressed(SendData);
 
   icecreamButton = createButton("ice cream");
   icecreamButton.mousePressed(increaseScore);
+  icecreamButton.style('background-color', color(59, 212, 147))
 }
 
 function increaseScore(){
   score++;
 }
 
-function databaseTest(){
+function SendData(){
   console.log(score);
   player.push(score);
+  score = 0;
+  alert("Data sendt til database");
 }
 
 
