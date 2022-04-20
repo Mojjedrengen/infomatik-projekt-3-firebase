@@ -6,9 +6,11 @@ var leftBuffer;
 var button;
 var icecreamButton;
 var score;
+var inputIni;
+var inputIniFelt;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight/1.02);  
+  createCanvas(windowWidth, windowHeight/1.05);  
   rightBuffer = createGraphics(windowWidth, 400);
   middleBuffer = createGraphics(windowWidth, 400);
   leftBuffer = createGraphics(windowWidth, 400);
@@ -26,6 +28,8 @@ function setup() {
   icecreamButton = createButton("ice cream");
   icecreamButton.mousePressed(increaseScore);
   icecreamButton.style('background-color', color(59, 212, 147))
+
+  inputIniFelt = createInput();
 }
 
 function increaseScore(){
@@ -33,11 +37,49 @@ function increaseScore(){
 }
 
 function SendData(){
-  console.log(score);
-  player.push(score);
-  score = 0;
-  alert("Data sendt til database");
+
+  var setInitals = database.ref('player/'+inputIni+'/');
+  var playerKey;
+  var playerScoreInDatabase;
+
+  if (score > 0) {
+    inputIni = inputIniFelt.value();
+
+    player.orderByKey().on("child_added", function(data) {
+      playerKey = data.key;
+      if (playerKey == inputIni) {
+        setInitals.on("value", function(snapshot) {
+          playerScoreInDatabase = snapshot.val();
+          
+          if (playerScoreInDatabase < score) {
+  
+            var dataToConsole ={
+              navn: inputIni,
+              score: score
+            } 
+  
+            console.log(dataToConsole);
+            setInitals.set(score);
+            alert('Sendt "' + score + '" til databasen, med navnet "');
+            score = 0;
+          }
+      }, function (error) {
+          console.log("Error: " + error.code);
+      }); 
+        }
+      console.log(data.key);
+  }, function (error) {
+      console.log("Error: " + error.code);
+  });
+
+  
+console.log(inputIni + " "+ playerKey);
+    
+    }
+    
+    
 }
+
 
 
 function draw() {
