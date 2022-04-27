@@ -41,7 +41,7 @@ function SendData(){
   var setInitals = database.ref('player/'+inputIni+'/');
   var playerKey;
   var playerScoreInDatabase;
-
+  
   if (score > 0) {
     inputIni = inputIniFelt.value();
 
@@ -51,6 +51,8 @@ function SendData(){
         setInitals.on("value", function(snapshot) {
           playerScoreInDatabase = snapshot.val();
           
+
+
           if (playerScoreInDatabase < score) {
   
             var dataToConsole ={
@@ -60,14 +62,28 @@ function SendData(){
   
             console.log(dataToConsole);
             setInitals.set(score);
-            alert('Sendt "' + score + '" til databasen, med navnet "');
+            alert('Sendt "' + score + '" til databasen, med navnet "' + inputIni + '"');
             score = 0;
           }
       }, function (error) {
           console.log("Error: " + error.code);
       }); 
         }
+        /*
+        else if (playerKey != inputIni) {
+         
+        }
       console.log(data.key);
+      var dataToConsole ={
+        navn: inputIni,
+        score: score
+      } 
+      */
+
+      console.log(dataToConsole);
+      setInitals.set(score);
+      alert('Sendt "' + score + '" til databasen, med navnet "' + inputIni + '"');
+      score = 0;
   }, function (error) {
       console.log("Error: " + error.code);
   });
