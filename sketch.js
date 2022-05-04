@@ -41,50 +41,60 @@ function SendData(){
   var setInitals = database.ref('player/'+inputIni+'/');
   var playerKey;
   var playerScoreInDatabase;
+  var exsist = false;
   
   if (score > 0) {
     inputIni = inputIniFelt.value();
 
     player.orderByKey().on("child_added", function(data) {
-      playerKey = data.key;
+      playerKey = data.key
       if (playerKey == inputIni) {
-        setInitals.on("value", function(snapshot) {
-          playerScoreInDatabase = snapshot.val();
-          
+        exsist = true;
+      }
 
+    }, function (error) {
+      console.log("Error: " + error.code);
+    });
 
-          if (playerScoreInDatabase < score) {
-  
-            var dataToConsole ={
-              navn: inputIni,
-              score: score
-            } 
-  
-            console.log(dataToConsole);
-            setInitals.set(score);
-            alert('Sendt "' + score + '" til databasen, med navnet "' + inputIni + '"');
-            score = 0;
-          }
-      }, function (error) {
-          console.log("Error: " + error.code);
-      }); 
-        }
-        /*
-        else if (playerKey != inputIni) {
-         
-        }
-      console.log(data.key);
+    if (exsist == false)
+    {
       var dataToConsole ={
         navn: inputIni,
         score: score
       } 
-      */
 
       console.log(dataToConsole);
-      setInitals.set(score);
+      database.ref('player/'+inputIni+'/').set(score);
       alert('Sendt "' + score + '" til databasen, med navnet "' + inputIni + '"');
       score = 0;
-  }, function (error) {
+      return;
+    }
+
+    player.orderByKey().on("child_added", function(data) {
+      playerKey = data.key;
+      if (playerKey == inputIni) {
+        
+          playerScoreInDatabase = data.val();
+          
+          var totalscore = playerScoreInDatabase + score
+
+          var dataToConsole ={
+            navn: inputIni,
+            score: totalscore
+          } 
+
+          console.log(dataToConsole);
+          database.ref('player/'+inputIni+'/').set(totalscore);
+          alert('Sendt "' + totalscore + '" til databasen, med navnet "' + inputIni + '"');
+          score = 0;
+          return;
+       }
+  }
+    
+    
+
+    
+  , function (error) {
       console.log("Error: " + error.code);
   });
 
