@@ -8,6 +8,8 @@ var icecreamButton;
 var score;
 var inputIni;
 var inputIniFelt;
+var retriveDataButton;
+var totalscore = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight/1.05);  
@@ -16,6 +18,12 @@ function setup() {
   leftBuffer = createGraphics(windowWidth, 400);
 
   score = 0;
+
+  player.orderByKey().on("value", function(data) {
+    retriveData();
+  }, function (error) {
+    console.log("Error: " + error.code);
+  });
   
   // var x = (windowWidth - width) / 2;
   // var y = (windowHeight - height) / 2;
@@ -30,10 +38,32 @@ function setup() {
   icecreamButton.style('background-color', color(59, 212, 147))
 
   inputIniFelt = createInput();
+
+  retriveDataButton = createButton("retrive score from database");
+  retriveDataButton.mousePressed(retriveData);
 }
 
 function increaseScore(){
   score++;
+}
+
+function retriveData(){
+  var playerKey;
+  var playerScoreInDatabase;
+
+  inputIni = inputIniFelt.value();
+
+  player.orderByKey().on("child_added", function(data) {
+    playerKey = data.key
+    if (playerKey == inputIni) {
+      playerScoreInDatabase = data.val();
+
+      totalscore = playerScoreInDatabase;
+    }
+
+  }, function (error) {
+    console.log("Error: " + error.code);
+  });
 }
 
 function SendData(){
@@ -125,16 +155,19 @@ function drawLeftPannel(){
   leftBuffer.background(100, 255, 255);
   leftBuffer.fill(0, 0, 0);
   leftBuffer.textSize(32);
-  leftBuffer.text(score, 50, 50);
+  leftBuffer.text("Current score: "+score, 50, 50);
 }
 
 function drawMiddlePannel() {
   middleBuffer.background(255, 255, 100);
+  middleBuffer.fill(0, 0, 0);
+  middleBuffer.textSize(32);
+  middleBuffer.text("Your total score is: "+totalscore, 50, 50);
 }
 
 function drawRightPannel() {
   rightBuffer.background(255, 100, 255);
   rightBuffer.fill(0, 0, 0);
   rightBuffer.textSize(32);
-  rightBuffer.text("This is the right buffer!", 50, 50);
+  rightBuffer.text("Shop", 50, 50);
 }
