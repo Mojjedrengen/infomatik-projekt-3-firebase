@@ -12,7 +12,7 @@ var retriveDataButton;
 var totalscore = 0;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight/1.05);  
+  createCanvas(windowWidth, windowHeight/1.35);  
   rightBuffer = createGraphics(windowWidth, 400);
   middleBuffer = createGraphics(windowWidth, 400);
   leftBuffer = createGraphics(windowWidth, 400);
@@ -32,6 +32,7 @@ function setup() {
 
   BtnSendData = createButton("database");
   BtnSendData.mousePressed(SendData);
+  
 
   icecreamButton = createButton("ice cream");
   icecreamButton.mousePressed(increaseScore);
