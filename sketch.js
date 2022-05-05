@@ -10,6 +10,9 @@ var inputIni;
 var inputIniFelt;
 var retriveDataButton;
 var totalscore = 0;
+var icecreamScoopButton;
+var icecreamScoops = 0;
+var scoopPrice = 5;
 
 function setup() {
   createCanvas(windowWidth, windowHeight/1.35);  
@@ -42,10 +45,31 @@ function setup() {
 
   retriveDataButton = createButton("retrive score from database");
   retriveDataButton.mousePressed(retriveData);
+
+
 }
 
 function increaseScore(){
-  score++;
+  if (icecreamScoops > 0) {
+    score += 1 + icecreamScoops;
+  }
+  else {
+    score++
+  }
+
+  console.log(icecreamScoops);
+}
+
+function buyIcecreamScoops(){
+  if (totalscore > scoopPrice) {
+    scoopPrice;
+    icecreamScoops++;
+    totalscore -= scoopPrice;
+    scoopPrice = scoopPrice * 1.25;
+
+    //console.log(icecreamScoops);
+    console.log(scoopPrice);
+  }
 }
 
 function retriveData(){
@@ -73,6 +97,12 @@ function SendData(){
   var playerKey;
   var playerScoreInDatabase;
   var exsist = false;
+
+  var dataToDatabase = {
+    score: score,
+    icecreamScoops: icecreamScoops,
+    icecreamScoopPrice: scoopPrice
+  }
   
   if (score > 0) {
     inputIni = inputIniFelt.value();
@@ -115,6 +145,7 @@ function SendData(){
           } 
 
           console.log(dataToConsole);
+          console.log(dataToDatabase)
           database.ref('player/'+inputIni+'/').set(totalscore);
           alert('Sendt "' + totalscore + '" til databasen, med navnet "' + inputIni + '"');
           score = 0;
@@ -141,6 +172,10 @@ console.log(inputIni + " "+ playerKey);
 
 function draw() {
   //background(220);
+
+  icecreamScoopButton = createButton("buy more scoops for "+ int(scoopPrice) +" score")
+  icecreamScoopButton.mousePressed(buyIcecreamScoops);
+  icecreamScoopButton.position(820, 70);
   
   drawLeftPannel();
   drawMiddlePannel();
@@ -163,7 +198,7 @@ function drawMiddlePannel() {
   middleBuffer.background(255, 255, 100);
   middleBuffer.fill(0, 0, 0);
   middleBuffer.textSize(32);
-  middleBuffer.text("Your total score is: "+totalscore, 50, 50);
+  middleBuffer.text("Your total score is: "+ int(totalscore), 50, 50);
 }
 
 function drawRightPannel() {
