@@ -84,20 +84,24 @@ function retriveData() {
     if (playerKey == inputIni) {
       //virker ikke rigtig skal have hjælp fra doktor 
       var setInitals = database.ref('player/' + inputIni + '/');
-    
-      setInitals.orderByChild("score").on("child_added", function(data) {
-        console.log(data.val().score);
-        playerScoreInDatabase = data.val();
-
-        totalscore = playerScoreInDatabase;
-
-        if (retrivedData == false) {
-          score = playerScoreInDatabase + score;
-        }
-        else if (retrivedData == true) {
-          score = playerScoreInDatabase;
-        }
-      });
+      var setScore = database.ref('player/' + inputIni + '/score/')
+      setScore.orderByKey().on("child_added", function (data) {
+          console.log(data.val());
+          playerScoreInDatabase = data.val();
+  
+          totalscore = playerScoreInDatabase;
+  
+          if (retrivedData == false) {
+            score = playerScoreInDatabase + score;
+            retrivedData = true
+            console.log(playerScoreInDatabase)
+          }
+          else if (retrivedData == true) {
+            score = playerScoreInDatabase;
+          }
+        }, function (error) {
+          console.log("Error: " + error.code);
+      });      
     }
 
   }, function (error) {
