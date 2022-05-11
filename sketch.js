@@ -29,14 +29,8 @@ function setup() {
     console.log("Error: " + error.code);
   });
 
-  // var x = (windowWidth - width) / 2;
-  // var y = (windowHeight - height) / 2;
-  // var størelse = (windowWidth - width)/ 0.333;
-  //cnv.position(x, y);
-
   BtnSendData = createButton("database");
   BtnSendData.mousePressed(SendData);
-
 
   icecreamButton = createButton("ice cream");
   icecreamButton.mousePressed(increaseScore);
@@ -46,8 +40,6 @@ function setup() {
 
   retriveDataButton = createButton("retrive score from database");
   retriveDataButton.mousePressed(retriveData);
-
-
 }
 
 function increaseScore() {
@@ -57,18 +49,16 @@ function increaseScore() {
   else {
     score++
   }
-
   console.log(icecreamScoops);
 }
 
 function buyIcecreamScoops() {
-  if (totalscore > scoopPrice) {
+  if (score > scoopPrice) {
     scoopPrice;
     icecreamScoops++;
     score -= scoopPrice;
     scoopPrice = scoopPrice * 1.25;
 
-    //console.log(icecreamScoops);
     console.log(scoopPrice);
   }
 }
@@ -82,36 +72,45 @@ function retriveData() {
   player.orderByKey().on("child_added", function (data) {
     playerKey = data.key
     if (playerKey == inputIni) {
-      //virker ikke rigtig skal have hjælp fra doktor 
       var setInitals = database.ref('player/' + inputIni + '/');
-      var setScore = database.ref('player/' + inputIni + '/score/')
-      setScore.orderByKey().on("child_added", function (data) {
-          console.log(data.val());
-          playerScoreInDatabase = data.val();
-  
-          totalscore = playerScoreInDatabase;
-  
-          if (retrivedData == false) {
-            score = playerScoreInDatabase + score;
-            retrivedData = true
-            console.log(playerScoreInDatabase)
+      setInitals.orderByKey().on("child_added", function (data) {
+        if (data.key == "score") {
+            console.log(data.val());
+            playerScoreInDatabase = data.val();
+    
+            totalscore = playerScoreInDatabase;
+    
+            if (retrivedData == false) {
+              score = playerScoreInDatabase + score;
+              retrivedData = true
+              console.log("player score: "+playerScoreInDatabase)
+            }
+            else if (retrivedData == true) {
+              score = playerScoreInDatabase;
+            }
           }
-          else if (retrivedData == true) {
-            score = playerScoreInDatabase;
+          if (data.key == "icecreamScoopPrice") {
+            playerScoopPriceInDatabase = data.val();
+
+            scoopPrice = playerScoopPriceInDatabase;
+            console.log("Scoop price: "+ playerScoopPriceInDatabase)
+          }
+          if (data.key == "icecreamScoops") {
+            playerScoopsInDatabase = data.val();
+
+            icecreamScoops = playerScoopsInDatabase
+            console.log("total amount of icecram scoops: "+ playerScoopsInDatabase)
           }
         }, function (error) {
           console.log("Error: " + error.code);
       });      
     }
-
   }, function (error) {
     console.log("Error: " + error.code);
   });
 }
 
 function SendData() {
-
-  var setInitals = database.ref('player/' + inputIni + '/');
   var playerKey;
   var playerScoreInDatabase;
   var exsist = false;
@@ -142,8 +141,8 @@ function SendData() {
       }
 
       console.log(dataToConsole);
-      database.ref('player/' + inputIni + '/').set(score);
-      alert('Sendt "' + score + '" til databasen, med navnet "' + inputIni + '"');
+      database.ref('player/' + inputIni + '/').set(dataToDatabase);
+      alert("If your score isn't shown correctly pres the 'Retrive from database' button");
       return;
     }
 
@@ -152,9 +151,6 @@ function SendData() {
       if (playerKey == inputIni) {
 
         playerScoreInDatabase = data.val();
-
-        //var totalscore = playerScoreInDatabase + score;
-
         var dataToConsole = {
           navn: inputIni,
           score: totalscore
@@ -163,32 +159,20 @@ function SendData() {
         console.log(dataToConsole);
         console.log(dataToDatabase)
         database.ref('player/' + inputIni + '/').set(dataToDatabase);
-        alert('Sendt "' + totalscore + '" til databasen, med navnet "' + inputIni + '"');
+        alert("If your score isn't shown correctly pres the 'Retrive from database' button");
         score = playerScoreInDatabase;
         return;
       }
-    }
-
-
-
-
-      , function (error) {
+    }, function (error) {
         console.log("Error: " + error.code);
       });
-
-
     console.log(inputIni + " " + playerKey);
-
   }
-
-
 }
 
 
 
 function draw() {
-  //background(220);
-
   icecreamScoopButton = createButton("buy more scoops for " + int(scoopPrice) + " score")
   icecreamScoopButton.mousePressed(buyIcecreamScoops);
   icecreamScoopButton.position(820, 70);
@@ -200,21 +184,21 @@ function draw() {
   image(leftBuffer, 0, 0);
   image(middleBuffer, 400, 0);
   image(rightBuffer, 800, 0);
-
 }
 
 function drawLeftPannel() {
   leftBuffer.background(100, 255, 255);
   leftBuffer.fill(0, 0, 0);
   leftBuffer.textSize(32);
-  leftBuffer.text("Current score: " + score, 50, 50);
+  leftBuffer.text("Current score: " + int(score), 50, 50);
 }
 
 function drawMiddlePannel() {
   middleBuffer.background(255, 255, 100);
   middleBuffer.fill(0, 0, 0);
-  middleBuffer.textSize(32);
-  middleBuffer.text("Your total score is: " + int(totalscore), 50, 50);
+  middleBuffer.textSize(28);
+  middleBuffer.text("You get "+ int(1+icecreamScoops) +" icecreams per click", 30, 50);
+  middleBuffer.text("You have "+ int(icecreamScoops) +" icecream scoops", 30, 90);
 }
 
 function drawRightPannel() {
