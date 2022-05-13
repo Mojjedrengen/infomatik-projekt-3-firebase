@@ -3,11 +3,7 @@ gaming ice crem moment
 jaer spil
 click html eller noget og så gaming time tror jeg
 dansk A
-Arthur du er en nød
-jeg synes bare vi skal gå i gang
-jeg synes bare vi skal gå i gang.
-why tho?
-svar mig athur og så dø du ikke
+
 
 using System;
 using System.Threading;
